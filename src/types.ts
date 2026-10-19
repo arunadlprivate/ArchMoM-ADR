@@ -47,4 +47,21 @@ export interface OllamaStatus {
 }
 
 export type IngestionMode = 'text' | 'audio' | 'vision';
-export type ViewTab = 'mom' | 'adrs' | 'actions' | 'json' | 'cli';
+export type ViewTab = 'mom' | 'adrs' | 'actions' | 'json' | 'architecture' | 'cli';
+
+export interface TestResultItem {
+  name: string;
+  category: string;
+  status: 'passed' | 'failed' | 'running';
+  duration?: string;
+  detail?: string;
+}
+
+export interface TestSuiteSummary {
+  total: number;
+  passed: number;
+  failed: number;
+  durationSeconds: number;
+  output: string;
+  tests: TestResultItem[];
+}

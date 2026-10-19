@@ -9,6 +9,7 @@ import { ActionItemTracker } from './components/ActionItemTracker';
 import { CliPlayground } from './components/CliPlayground';
 import { OllamaStatusDrawer } from './components/OllamaStatusDrawer';
 import { ExportersModal } from './components/ExportersModal';
+import { ArchitectureView } from './components/ArchitectureView';
 import { Code, CheckCircle, ShieldCheck, Cpu } from 'lucide-react';
 
 const INITIAL_TEXT = `# Architecture Sync: Kafka vs RabbitMQ Migration for Edge Telemetry
@@ -222,6 +223,10 @@ export default function App() {
             actionItems={minutes.action_items || []}
             meetingTitle={minutes.title}
           />
+        )}
+
+        {activeTab === 'architecture' && (
+          <ArchitectureView />
         )}
 
         {activeTab === 'json' && (

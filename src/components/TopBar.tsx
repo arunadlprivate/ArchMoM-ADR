@@ -57,6 +57,14 @@ export const TopBar: React.FC<TopBarProps> = ({
           Action Items
         </button>
         <button
+          onClick={() => setActiveTab('architecture')}
+          className={`hover:text-white transition-colors whitespace-nowrap shrink-0 pb-0.5 ${
+            activeTab === 'architecture' ? 'text-white border-b-2 border-indigo-500 font-semibold' : 'text-slate-400'
+          }`}
+        >
+          Architecture &amp; Tests
+        </button>
+        <button
           onClick={() => setActiveTab('json')}
           className={`hover:text-white transition-colors whitespace-nowrap shrink-0 pb-0.5 ${
             activeTab === 'json' ? 'text-white border-b-2 border-indigo-500 font-semibold' : 'text-slate-400'

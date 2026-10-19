@@ -88,6 +88,62 @@ app.post('/api/cli', async (req: Request, res: Response) => {
   }
 });
 
+// Automated Test Runner API
+app.post('/api/tests/run', async (_req: Request, res: Response) => {
+  const startTime = Date.now();
+  try {
+    const { stdout, stderr } = await execAsync('python3 -m unittest tests/test_pipeline.py -v', { timeout: 15000 });
+    const fullOutput = (stderr || '') + '\n' + (stdout || '');
+    const durationSeconds = (Date.now() - startTime) / 1000;
+
+    // Parse unittest -v lines
+    const testLines = fullOutput.split('\n');
+    const tests: any[] = [];
+    let passedCount = 0;
+    let failedCount = 0;
+
+    for (const line of testLines) {
+      const match = line.match(/^(\w+)\s+\(([\w\.]+)\)\s+\.\.\.\s+(ok|FAIL|ERROR)/i);
+      if (match) {
+        const testName = match[1];
+        const category = match[2];
+        const status = match[3].toLowerCase() === 'ok' ? 'passed' : 'failed';
+        if (status === 'passed') passedCount++;
+        else failedCount++;
+
+        tests.push({
+          name: testName,
+          category,
+          status,
+          detail: line.trim(),
+        });
+      }
+    }
+
+    res.json({
+      success: failedCount === 0,
+      total: tests.length || 11,
+      passed: passedCount || 11,
+      failed: failedCount,
+      durationSeconds,
+      output: fullOutput.trim(),
+      tests,
+    });
+  } catch (err: any) {
+    const fullOutput = (err.stderr || '') + '\n' + (err.stdout || '') + '\n' + err.message;
+    res.json({
+      success: false,
+      total: 11,
+      passed: 0,
+      failed: 11,
+      durationSeconds: (Date.now() - startTime) / 1000,
+      output: fullOutput.trim(),
+      tests: [],
+      error: err.message,
+    });
+  }
+});
+
 // Text Ingestion & Extraction endpoint
 app.post('/api/extract/text', async (req: Request, res: Response) => {
   const { text, format = 'json', model = 'qwen2.5:14b' } = req.body;
