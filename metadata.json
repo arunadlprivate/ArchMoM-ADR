@@ -1,0 +1,10 @@
+{
+  "name": "ArchMoM - Local Architecture Meeting & ADR Intelligence",
+  "description": "Privacy-preserving local-first assistant for Principal Architects to ingest notes, audio, and whiteboard photos into structured Meeting Minutes, Action Items, and Architecture Decision Records (ADRs).",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
